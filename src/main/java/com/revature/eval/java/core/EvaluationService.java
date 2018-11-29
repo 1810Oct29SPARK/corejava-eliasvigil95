@@ -30,8 +30,14 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String acronym(String phrase) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		phrase = phrase.toUpperCase();
+		String[] words = phrase.split("-|\\s");
+		String acronym = "";
+		for (int i = 0; i < words.length; i++) {
+			acronym = acronym + words[i].charAt(0);
+		}
+
+		return acronym;
 	}
 
 	/**
@@ -84,20 +90,30 @@ public class EvaluationService {
 		}
 
 		public boolean isEquilateral() {
-			// TODO Write an implementation for this method declaration
-			return false;
+			if (sideOne == sideTwo & sideTwo == sideThree) {
+				return true;
+			} else {
+				return false;
+			}
+			
 		}
 
 		public boolean isIsosceles() {
-			// TODO Write an implementation for this method declaration
-			return false;
+			if (sideOne == sideTwo | sideOne == sideThree | sideTwo == sideThree) {
+				return true;
+			} else {
+				return false;
+			}
+			
 		}
 
 		public boolean isScalene() {
-			// TODO Write an implementation for this method declaration
+		if (sideOne != sideTwo & sideOne != sideThree & sideTwo != sideThree) {
+			return true;
+		} else {
 			return false;
 		}
-
+		}
 	}
 
 	/**
@@ -116,8 +132,36 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getScrabbleScore(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		int runningScore = 0;
+		String str = string.toUpperCase();
+		char[] letters = str.toCharArray();
+		for (int i = 0; i < letters.length; i++) {
+			if (letters[i] == 'E' | letters[i] == 'A' | letters[i] == 'O' | letters[i] == 'T' | letters[i] == 'I'
+			| letters[i] == 'N' | letters[i] == 'R' | letters[i] == 'S' | letters[i] == 'L' | letters[i] == 'U') {
+
+				runningScore = runningScore + 1;
+			}
+			else if (letters[i] == 'D' | letters[i] == 'G') {
+				runningScore = runningScore + 2;
+
+			}
+			else if (letters[i] == 'C' | letters[i] == 'M' | letters[i] == 'B' | letters[i] == 'P') {
+				runningScore = runningScore + 3;
+			}
+			else if (letters[i] == 'H' | letters[i] == 'F' | letters[i] == 'W' | letters[i] == 'Y' | letters[i] == 'V') {
+				runningScore = runningScore + 4;
+			}
+			else if (letters[i] == 'K') {
+				runningScore = runningScore + 5;
+			}
+			else if (letters[i] == 'J' | letters[i] == 'X') {
+				runningScore = runningScore + 8;
+			}
+			else if (letters[i] == 'Q' | letters[i] == 'Z') {
+				runningScore = runningScore + 10;
+			}
+		}
+		return runningScore;
 	}
 
 	/**
@@ -151,9 +195,19 @@ public class EvaluationService {
 	 * Note: As this exercise only deals with telephone numbers used in
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
-	public String cleanPhoneNumber(String string) {
-		// TODO Write an implementation for this method declaration
-		return null;
+	public static void main (String[] args) {
+		//System.out.println(cleanPhoneNumber("+1(720)418-1477"));
+	}
+	public String cleanPhoneNumber(String string) throws IllegalArgumentException {
+		
+		String justNums = string.replaceAll("[^0-9]","");
+		if (justNums.length() < 10) {
+			throw new IllegalArgumentException ("Not enough digits!");
+		}
+		else if (justNums.length() >= 11) {
+			throw new IllegalArgumentException ("There are too many digits!");
+		}
+		return justNums;
 	}
 
 	/**
@@ -166,7 +220,10 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Map<String, Integer> wordCount(String string) {
-		// TODO Write an implementation for this method declaration
+		String[] words = string.split("\\s");
+		int numofWords = words.length;
+		
+		
 		return null;
 	}
 
@@ -246,7 +303,16 @@ public class EvaluationService {
 	 * @return
 	 */
 	public String toPigLatin(String string) {
-		// TODO Write an implementation for this method declaration
+		string = string.toLowerCase();
+		String[] words = string.split("\\s"); 
+		String pigLatin = "";
+	
+		for (int i = 0; i < words.length; i++)
+		if (words[i].charAt(0) == 'a'| words[i].charAt(0) == 'e'| words[i].charAt(0) == 'i' | words[i].charAt(0) == 'o' | words[i].charAt(0) == 'u') {
+			words[i] = words[i] + 'a' + 'y';
+			pigLatin = pigLatin + words[i];
+		}
+		
 		return null;
 	}
 
