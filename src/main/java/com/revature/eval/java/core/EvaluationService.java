@@ -1,10 +1,12 @@
 package com.revature.eval.java.core;
 
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -710,28 +712,40 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isPangram(String string) {
-		/*
-		String phrase = string;
-		TreeMap <String, Integer> tmap = new TreeMap <String, Integer>();
-		
-		for (int i = 0; i < phrase.length(); i++) {
-			
+		boolean[] findLetters = new boolean[26];
+		int index = 0;
+		for (int i = 0; i < string.length(); i++) {
+			if ('A' <= string.charAt(i) &&  
+                    string.charAt(i) <= 'Z') {
+                          
+                index = string.charAt(i) - 'A'; 
+			}
+            else if('a' <= string.charAt(i) &&  
+                        string.charAt(i) <= 'z') {
+                              
+                index = string.charAt(i) - 'a'; 
+            }
+			findLetters[index] = true;
 		}
-		*/
-		return false;
+		  for (int j = 0; j <= 25; j++) 
+	            if (findLetters[j] == false) {
+	                return (false); 
+	            }
+		
+		return true;
 	}
 
 	/**
 	 * 17. Calculate the moment when someone has lived for 10^9 seconds.
 	 * 
-	 * A gigasecond is 109 (1,000,000,000) seconds.
+	 * A gigasecond is 10^9 (1,000,000,000) seconds.
 	 * 
 	 * @param given
 	 * @return
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
-		// TODO Write an implementation for this method declaration
-		return null;
+		long gigasecond = 1000000000;
+		return given.plus(gigasecond, ChronoUnit.SECONDS);
 	}
 
 	/**
@@ -748,15 +762,29 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+		int inputNum = i;
+		HashSet <Integer> mults = new HashSet <Integer>();
+		for (int j = 0; j < inputNum; j++) {
+			for (int k = 0; k < set.length; k++) {
+				if (j % set[k] == 0) {
+					mults.add(j);
+				}
+			}
+		}
+		
+		List<Integer> multList = new ArrayList <Integer>(mults);
+		int sum = 0;
+		for (int l = 0; l < multList.size(); l++) {
+			sum += multList.get(l);
+		}
+		return sum;
 	}
 
 	public static void main(String[] args) {
 		// System.out.println(cleanPhoneNumber("+1(720)418-1477"));
 		//System.out.println(toPigLatin("quick fast run"));
 		//System.out.println(calculateNthPrime(3));
-		System.out.println(isLuhnValid("8273 1232 7352 0569"));
+		//System.out.println(isLuhnValid("8273 1232 7352 0569"));
 	}
 	
 	/**
