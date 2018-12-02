@@ -1,5 +1,7 @@
 package com.revature.eval.java.core;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
@@ -745,6 +747,12 @@ public class EvaluationService {
 	 */
 	public Temporal getGigasecondDate(Temporal given) {
 		long gigasecond = 1000000000;
+		if (!given.isSupported(ChronoUnit.SECONDS)) {
+			LocalDate dateInput = (LocalDate) given;
+			LocalDateTime newDate = dateInput.atStartOfDay(); 
+			return newDate.plus(gigasecond, ChronoUnit.SECONDS);
+		}
+		
 		return given.plus(gigasecond, ChronoUnit.SECONDS);
 	}
 
@@ -780,12 +788,6 @@ public class EvaluationService {
 		return sum;
 	}
 
-	public static void main(String[] args) {
-		// System.out.println(cleanPhoneNumber("+1(720)418-1477"));
-		//System.out.println(toPigLatin("quick fast run"));
-		//System.out.println(calculateNthPrime(3));
-		//System.out.println(isLuhnValid("8273 1232 7352 0569"));
-	}
 	
 	/**
 	 * 19. Given a number determine whether or not it is valid per the Luhn formula.
