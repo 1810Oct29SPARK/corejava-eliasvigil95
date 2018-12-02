@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Vector;
 
 public class EvaluationService {
 
@@ -95,7 +96,7 @@ public class EvaluationService {
 		}
 
 		public boolean isEquilateral() {
-			if (sideOne == sideTwo & sideTwo == sideThree) {
+			if (sideOne == sideTwo && sideTwo == sideThree) {
 				return true;
 			} else {
 				return false;
@@ -104,7 +105,7 @@ public class EvaluationService {
 		}
 
 		public boolean isIsosceles() {
-			if (sideOne == sideTwo | sideOne == sideThree | sideTwo == sideThree) {
+			if (sideOne == sideTwo || sideOne == sideThree || sideTwo == sideThree) {
 				return true;
 			} else {
 				return false;
@@ -113,7 +114,7 @@ public class EvaluationService {
 		}
 
 		public boolean isScalene() {
-			if (sideOne != sideTwo & sideOne != sideThree & sideTwo != sideThree) {
+			if (sideOne != sideTwo && sideOne != sideThree && sideTwo != sideThree) {
 				return true;
 			} else {
 				return false;
@@ -141,25 +142,24 @@ public class EvaluationService {
 		String str = string.toUpperCase();
 		char[] letters = str.toCharArray();
 		for (int i = 0; i < letters.length; i++) {
-			if (letters[i] == 'E' | letters[i] == 'A' | letters[i] == 'O' | letters[i] == 'T' | letters[i] == 'I'
-					| letters[i] == 'N' | letters[i] == 'R' | letters[i] == 'S' | letters[i] == 'L'
-					| letters[i] == 'U') {
+			if (letters[i] == 'E' || letters[i] == 'A' || letters[i] == 'O' || letters[i] == 'T' || letters[i] == 'I'
+					|| letters[i] == 'N' || letters[i] == 'R' || letters[i] == 'S' || letters[i] == 'L'
+					|| letters[i] == 'U') {
+				runningScore += 1;
+			} else if (letters[i] == 'D' || letters[i] == 'G') {
+				runningScore += 2;
 
-				runningScore = runningScore + 1;
-			} else if (letters[i] == 'D' | letters[i] == 'G') {
-				runningScore = runningScore + 2;
-
-			} else if (letters[i] == 'C' | letters[i] == 'M' | letters[i] == 'B' | letters[i] == 'P') {
-				runningScore = runningScore + 3;
-			} else if (letters[i] == 'H' | letters[i] == 'F' | letters[i] == 'W' | letters[i] == 'Y'
-					| letters[i] == 'V') {
-				runningScore = runningScore + 4;
+			} else if (letters[i] == 'C' || letters[i] == 'M' || letters[i] == 'B' || letters[i] == 'P') {
+				runningScore += 3;
+			} else if (letters[i] == 'H' || letters[i] == 'F' || letters[i] == 'W' || letters[i] == 'Y'
+					|| letters[i] == 'V') {
+				runningScore += 4;
 			} else if (letters[i] == 'K') {
-				runningScore = runningScore + 5;
-			} else if (letters[i] == 'J' | letters[i] == 'X') {
-				runningScore = runningScore + 8;
-			} else if (letters[i] == 'Q' | letters[i] == 'Z') {
-				runningScore = runningScore + 10;
+				runningScore += 5;
+			} else if (letters[i] == 'J' || letters[i] == 'X') {
+				runningScore += 8;
+			} else if (letters[i] == 'Q' || letters[i] == 'Z') {
+				runningScore += 10;
 			}
 		}
 		return runningScore;
@@ -196,11 +196,7 @@ public class EvaluationService {
 	 * Note: As this exercise only deals with telephone numbers used in
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
-	public static void main(String[] args) {
-		// System.out.println(cleanPhoneNumber("+1(720)418-1477"));
-		//System.out.println(toPigLatin("quick fast run"));
-		//System.out.println(calculateNthPrime(3));
-	}
+	
 
 	public String cleanPhoneNumber(String string) throws IllegalArgumentException {
 
@@ -714,7 +710,14 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isPangram(String string) {
-		// TODO Write an implementation for this method declaration
+		/*
+		String phrase = string;
+		TreeMap <String, Integer> tmap = new TreeMap <String, Integer>();
+		
+		for (int i = 0; i < phrase.length(); i++) {
+			
+		}
+		*/
 		return false;
 	}
 
@@ -749,6 +752,13 @@ public class EvaluationService {
 		return 0;
 	}
 
+	public static void main(String[] args) {
+		// System.out.println(cleanPhoneNumber("+1(720)418-1477"));
+		//System.out.println(toPigLatin("quick fast run"));
+		//System.out.println(calculateNthPrime(3));
+		System.out.println(isLuhnValid("8273 1232 7352 0569"));
+	}
+	
 	/**
 	 * 19. Given a number determine whether or not it is valid per the Luhn formula.
 	 * 
@@ -786,8 +796,39 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isLuhnValid(String string) {
-		// TODO Write an implementation for this method declaration
+		String luhn = string.replaceAll("\\s", "");
+		if(luhn.length() < 2) {
+			return false;
+		}
+		for(char c : luhn.toCharArray()) {
+			if (Character.isLetter(c) || !Character.isDigit(c)) {
+				return false;
+			}
+		}
+		int sum = 0;
+		int currentNum = 0;
+		for (int i = luhn.length() - 2; i >=0; i -= 2) {
+			currentNum = Integer.parseInt("" + luhn.charAt(i));
+			currentNum = currentNum * 2;
+			if (currentNum > 9 && i != 1) {
+				currentNum -= 9;
+				sum += currentNum + Character.getNumericValue(luhn.charAt(i+1));
+			} else if (currentNum > 9 && i == 1) {
+				currentNum -= 9;
+				sum += currentNum + Character.getNumericValue(luhn.charAt(i-1)) + Character.getNumericValue(luhn.charAt(i+1));
+			} else if(currentNum <= 9 && i != 1) {
+				sum += currentNum + Character.getNumericValue(luhn.charAt(i+1));
+			} else if (currentNum <=9 && i == 1){
+				sum += currentNum + Character.getNumericValue(luhn.charAt(i-1)) + Character.getNumericValue(luhn.charAt(i+1));
+			}
+			
+		}
+	
+		if (sum % 10 == 0) {
+			return true;
+		} else {
 		return false;
+		}
 	}
 
 	/**
@@ -818,8 +859,35 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int solveWordProblem(String string) {
-		// TODO Write an implementation for this method declaration
-		return 0;
+	
+		String noWhatIs = string.replace("What is ", "" );
+		String noQuestion = noWhatIs.replace("?", "");
+		String noBy = noQuestion.replace("by ", "");
+		String[] problem = noBy.split("\\s");
+		int result = 0;
+		
+		String operator = problem[1];
+		
+		switch (operator)  {
+		
+			case "plus":
+				result = Integer.parseInt(problem[0]) + Integer.parseInt(problem[2]);
+				break;
+			
+			case "minus":
+				result = Integer.parseInt(problem[0]) - Integer.parseInt(problem[2]);
+				break;
+				
+			case "multiplied":
+				result = Integer.parseInt(problem[0]) * Integer.parseInt(problem[2]);
+				break;
+			
+			case "divided":
+				result = Integer.parseInt(problem[0]) / Integer.parseInt(problem[2]);
+				break;
+		}
+		
+		return result;
 	}
 
 }
