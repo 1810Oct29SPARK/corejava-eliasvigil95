@@ -319,7 +319,7 @@ public class EvaluationService {
 	 * @param string
 	 * @return
 	 */
-	public static String toPigLatin(String string) {
+	public String toPigLatin(String string) {
 		string = string.toLowerCase();
 		String[] words = string.split("\\s");
 		String pigLatin = "";
@@ -390,7 +390,7 @@ public class EvaluationService {
 	 * @param input
 	 * @return
 	 */
-	public static boolean isArmstrongNumber(int input) {
+	public boolean isArmstrongNumber(int input) {
 		int[] digits = Integer.toString(input).chars().map(c -> c - '0').toArray();
 		int total = 0;
 		for (int d = 0; d < digits.length; d++) {
