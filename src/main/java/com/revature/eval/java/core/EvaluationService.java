@@ -200,7 +200,6 @@ public class EvaluationService {
 	 * Note: As this exercise only deals with telephone numbers used in
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
-	
 
 	public String cleanPhoneNumber(String string) throws IllegalArgumentException {
 
@@ -224,26 +223,26 @@ public class EvaluationService {
 	 * @return
 	 */
 	public Map<String, Integer> wordCount(String string) {
-		
-		
+
 		// split the input into words and put into an array
 		String[] words = string.split("\\s|,|-");
-		Map<String, Integer> wordFreq = new HashMap <String, Integer>();
+		Map<String, Integer> wordFreq = new HashMap<String, Integer>();
 		for (int i = 0; i < words.length; i++) {
-			
-			// if the word has not been found before, add it to the hashmap and set the value to 1
+
+			// if the word has not been found before, add it to the hashmap and set the
+			// value to 1
 			if (!wordFreq.containsKey(words[i])) {
 				wordFreq.put(words[i], 1);
 			}
-			
+
 			// if the word has been found before, add one to the value
 			else {
 				int counter = wordFreq.get(words[i]);
 				wordFreq.put(words[i], counter + 1);
 			}
-		
+
 		}
-		// scrub out any empty keys 
+		// scrub out any empty keys
 		wordFreq.remove("");
 		return wordFreq;
 	}
@@ -327,7 +326,7 @@ public class EvaluationService {
 		string = string.toLowerCase();
 		String[] words = string.split("\\s");
 		String pigLatin = "";
-		
+
 		for (int i = 0; i < words.length; i++) {
 			// if the first character in the word is a vowel:
 			if (words[i].charAt(0) == 'a' || words[i].charAt(0) == 'e' || words[i].charAt(0) == 'i'
@@ -335,39 +334,46 @@ public class EvaluationService {
 				String word = words[i];
 				word = word + "ay";
 				pigLatin = pigLatin + word;
+				break;
 			}
-			
+
 			String word = words[i];
-			
-				// if the first character in the word doesn't begin with a vowel
-			if (word.charAt(0) != 'a' && word.charAt(0) != 'e' && word.charAt(0) != 'i'
-					&& word.charAt(0) != 'o' && word.charAt(0) != 'u') {
+
+			for (int j = 1; j < word.length(); j++) {
+				// if word starts with qu 
+				if (word.charAt(0) == 'q' && word.charAt(1) == 'u') {
+					String chunk = word.substring(0, 2);
+					word = word.replaceFirst(chunk, "");
+					word = word + chunk + "ay ";
+					break;
+
+				}
 				
+				if (j == word.length()-1 && word.charAt(j) == 'a' || word.charAt(j) == 'e' || word.charAt(j) == 'i' || word.charAt(j) == 'o'
+						|| word.charAt(j) == 'u' ) {
+					int firstVowelIndex = j;
+					String chunk = word.substring(0, firstVowelIndex);
+					word = word.replaceFirst(chunk, "");
+					word = word + chunk + "ay";
+					// if word we're on is the last word, don't add a space after "ay"
+					break;
+				}
 				// then find the first vowel's index.
 				// for each character in the word, check to see if it's a vowel
-				 for (int j = 1; j < word.length(); j++) {
-					 if (word.charAt(0) == 'q' && word.charAt(1) == 'u') {
-						 String chunk = word.substring(0, 2);
-						 word = word.replaceFirst(chunk, "");
-						 word = word + chunk + "ay ";
-						 break;
-						 
-					 }
-					 if (word.charAt(j) == 'a' || word.charAt(j) == 'e' || word.charAt(j) == 'i'
-								|| word.charAt(j) == 'o' || word.charAt(j) == 'u') {
-						 int firstVowelIndex = j;
-						 String chunk = word.substring(0, firstVowelIndex);
-						 word = word.replaceFirst(chunk, "");
-						 word = word + chunk + "ay";
-						 // if word we're on is the last word, don't add a space after "ay"
-						 break;
-					 }
-				      
-				 }
-				
-				pigLatin = pigLatin + word;
+				if (word.charAt(j) == 'a' || word.charAt(j) == 'e' || word.charAt(j) == 'i' || word.charAt(j) == 'o'
+						|| word.charAt(j) == 'u') {
+					int firstVowelIndex = j;
+					String chunk = word.substring(0, firstVowelIndex);
+					word = word.replaceFirst(chunk, "");
+					word = word + chunk + "ay ";
+					// if word we're on is the last word, don't add a space after "ay"
+					break;
+				}
+
 			}
-				
+
+			pigLatin = pigLatin + word;
+
 		}
 		return pigLatin;
 	}
@@ -388,16 +394,16 @@ public class EvaluationService {
 	 * @return
 	 */
 	public static boolean isArmstrongNumber(int input) {
-		int[]digits = Integer.toString(input).chars().map(c -> c-'0').toArray();
+		int[] digits = Integer.toString(input).chars().map(c -> c - '0').toArray();
 		int total = 0;
-		   for(int d = 0; d < digits.length; d++) {
-			   int numPows = (int)Math.pow(digits[d], digits.length);
-			   total = total + numPows;
-		   }
-		   if (total != input) {
-			   return false;
-		   }
-		   return true;
+		for (int d = 0; d < digits.length; d++) {
+			int numPows = (int) Math.pow(digits[d], digits.length);
+			total = total + numPows;
+		}
+		if (total != input) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -412,19 +418,19 @@ public class EvaluationService {
 	 */
 	public List<Long> calculatePrimeFactorsOf(long l) {
 		ArrayList<Long> primes = new ArrayList<Long>();
-		long number = l; 
+		long number = l;
 		if (number <= 2) {
 			primes.add(number);
 			return primes;
 		}
-		
+
 		for (long i = 2; i <= number; i++) {
 			while (number % i == 0) {
 				primes.add(i);
 				number = number / i;
 			}
 		}
-		
+
 		return primes;
 	}
 
@@ -463,7 +469,6 @@ public class EvaluationService {
 		}
 
 		public String rotate(String string) {
-			
 
 			StringBuilder cipherText = new StringBuilder();
 
@@ -477,7 +482,7 @@ public class EvaluationService {
 						if (temp > 'z') {
 							temp = (char) (string.charAt(i) - (26 - rotation));
 						}
-					}else if (Character.isUpperCase(temp)) {
+					} else if (Character.isUpperCase(temp)) {
 						temp = (char) (string.charAt(i) + rotation);
 						if (temp > 'Z') {
 							temp = (char) (string.charAt(i) - (26 - rotation));
@@ -508,18 +513,18 @@ public class EvaluationService {
 		int nthPrime = 2;
 		if (i <= 0) {
 			throw new IllegalArgumentException("Enter a number bigger than 0");
-		} else if(i == 1) {
+		} else if (i == 1) {
 			return nthPrime;
 		}
-		for (int j = 3; j < Integer.MAX_VALUE; j++ ) {
-			if ( counter == i) {
+		for (int j = 3; j < Integer.MAX_VALUE; j++) {
+			if (counter == i) {
 				break;
 			}
 			for (int k = 2; k <= j; k++) {
 				if (j % k == 0 && j != k) {
 					break;
 				}
-				if(j == k) {
+				if (j == k) {
 					counter++;
 					nthPrime = j;
 					break;
@@ -527,7 +532,7 @@ public class EvaluationService {
 			}
 		}
 		return nthPrime;
-}
+	}
 
 	/**
 	 * 13 & 14. Create an implementation of the atbash cipher, an ancient encryption
@@ -563,23 +568,25 @@ public class EvaluationService {
 		 */
 		public static String encode(String string) {
 			string = string.toLowerCase();
-			char[] backAlphabet = {'z', 'y', 'x','w','v','u','t','s','r','q','p','o','n','m','l','k','j','i','h','g','f','e','d','c','b','a'};
-			char[] alphabet = {'a', 'b', 'c', 'd','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+			char[] backAlphabet = { 'z', 'y', 'x', 'w', 'v', 'u', 't', 's', 'r', 'q', 'p', 'o', 'n', 'm', 'l', 'k', 'j',
+					'i', 'h', 'g', 'f', 'e', 'd', 'c', 'b', 'a' };
+			char[] alphabet = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
+					'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 			String loweredString = string.replaceAll("[^a-z0-9]", "");
 			String cipheredString = "";
 			String buildString = "";
-			
+
 			for (int i = 0; i < loweredString.length(); i++) {
 				char letter = loweredString.charAt(i);
 				for (int j = 0; j < alphabet.length; j++) {
-					if (j == 25 && letter != alphabet[j]){
+					if (j == 25 && letter != alphabet[j]) {
 						buildString += letter;
 					}
 					if (letter == alphabet[j]) {
 						buildString += backAlphabet[j];
 						break;
 					}
-						
+
 				}
 			}
 			if (buildString.length() < 5) {
@@ -587,30 +594,30 @@ public class EvaluationService {
 			}
 			int lowIndex = 0;
 			int highIndex = 5;
-			
-			for (int k = 0; k < buildString.length()/5; k++) {
-				
+
+			for (int k = 0; k < buildString.length() / 5; k++) {
+
 				if (highIndex > buildString.length()) {
 					highIndex = buildString.length();
 				}
-				
+
 				if (buildString.length() == highIndex) {
 					cipheredString += buildString.substring(lowIndex, highIndex);
 					break;
 				}
 				cipheredString += buildString.substring(lowIndex, highIndex) + " ";
-				
+
 				lowIndex += 5;
 				highIndex += 5;
-				
+
 			}
-			
-			// if buildString has length that is not multiple of 5, then concatenate the last bit of it. 
+
+			// if buildString has length that is not multiple of 5, then concatenate the
+			// last bit of it.
 			if (buildString.length() % 5 != 0) {
 				cipheredString += buildString.substring(lowIndex, buildString.length());
 			}
-			
-			
+
 			return cipheredString;
 		}
 
@@ -622,22 +629,24 @@ public class EvaluationService {
 		 */
 		public static String decode(String string) {
 			string = string.toLowerCase();
-			char[] backAlphabet = {'z', 'y', 'x','w','v','u','t','s','r','q','p','o','n','m','l','k','j','i','h','g','f','e','d','c','b','a'};
-			char[] alphabet = {'a', 'b', 'c', 'd','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+			char[] backAlphabet = { 'z', 'y', 'x', 'w', 'v', 'u', 't', 's', 'r', 'q', 'p', 'o', 'n', 'm', 'l', 'k', 'j',
+					'i', 'h', 'g', 'f', 'e', 'd', 'c', 'b', 'a' };
+			char[] alphabet = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
+					'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
 			String loweredString = string.replaceAll("[^a-z0-9]", "");
 			String buildString = "";
-			
+
 			for (int i = 0; i < loweredString.length(); i++) {
 				char letter = loweredString.charAt(i);
 				for (int j = 0; j < alphabet.length; j++) {
-					if (j == 25 && letter != alphabet[j]){
+					if (j == 25 && letter != alphabet[j]) {
 						buildString += letter;
 					}
 					if (letter == alphabet[j]) {
 						buildString += backAlphabet[j];
 						break;
 					}
-						
+
 				}
 			}
 			return buildString;
@@ -671,33 +680,31 @@ public class EvaluationService {
 		if (isbn.length() < 10) {
 			return false;
 		}
-		
-		ArrayList<Integer> isbnNums = new ArrayList<Integer>();		
-		
-		
+
+		ArrayList<Integer> isbnNums = new ArrayList<Integer>();
+
 		for (int i = 0; i < isbn.length(); i++) {
-			if (isbn.charAt(isbn.length()-1) == 'X') {
+			if (isbn.charAt(isbn.length() - 1) == 'X') {
 				isbnNums.add(10);
-			}
-			else {
-				isbnNums.add((int)isbn.charAt(i));
+			} else {
+				isbnNums.add((int) isbn.charAt(i));
 			}
 		}
-	
-		int counter = 10; 
+
+		int counter = 10;
 		int sum = 0;
-		
+
 		for (int i = 0; i < isbn.length(); i++) {
 			sum += isbnNums.get(i) * counter;
 			counter--;
 		}
-		
+
 		if (sum % 11 == 0) {
 			return true;
 		} else {
 			return false;
 		}
-		
+
 	}
 
 	/**
@@ -717,23 +724,20 @@ public class EvaluationService {
 		boolean[] findLetters = new boolean[26];
 		int index = 0;
 		for (int i = 0; i < string.length(); i++) {
-			if ('A' <= string.charAt(i) &&  
-                    string.charAt(i) <= 'Z') {
-                          
-                index = string.charAt(i) - 'A'; 
+			if ('A' <= string.charAt(i) && string.charAt(i) <= 'Z') {
+
+				index = string.charAt(i) - 'A';
+			} else if ('a' <= string.charAt(i) && string.charAt(i) <= 'z') {
+
+				index = string.charAt(i) - 'a';
 			}
-            else if('a' <= string.charAt(i) &&  
-                        string.charAt(i) <= 'z') {
-                              
-                index = string.charAt(i) - 'a'; 
-            }
 			findLetters[index] = true;
 		}
-		  for (int j = 0; j <= 25; j++) 
-	            if (findLetters[j] == false) {
-	                return (false); 
-	            }
-		
+		for (int j = 0; j <= 25; j++)
+			if (findLetters[j] == false) {
+				return (false);
+			}
+
 		return true;
 	}
 
@@ -749,10 +753,10 @@ public class EvaluationService {
 		long gigasecond = 1000000000;
 		if (!given.isSupported(ChronoUnit.SECONDS)) {
 			LocalDate dateInput = (LocalDate) given;
-			LocalDateTime newDate = dateInput.atStartOfDay(); 
+			LocalDateTime newDate = dateInput.atStartOfDay();
 			return newDate.plus(gigasecond, ChronoUnit.SECONDS);
 		}
-		
+
 		return given.plus(gigasecond, ChronoUnit.SECONDS);
 	}
 
@@ -771,7 +775,7 @@ public class EvaluationService {
 	 */
 	public int getSumOfMultiples(int i, int[] set) {
 		int inputNum = i;
-		HashSet <Integer> mults = new HashSet <Integer>();
+		HashSet<Integer> mults = new HashSet<Integer>();
 		for (int j = 0; j < inputNum; j++) {
 			for (int k = 0; k < set.length; k++) {
 				if (j % set[k] == 0) {
@@ -779,8 +783,8 @@ public class EvaluationService {
 				}
 			}
 		}
-		
-		List<Integer> multList = new ArrayList <Integer>(mults);
+
+		List<Integer> multList = new ArrayList<Integer>(mults);
 		int sum = 0;
 		for (int l = 0; l < multList.size(); l++) {
 			sum += multList.get(l);
@@ -788,7 +792,6 @@ public class EvaluationService {
 		return sum;
 	}
 
-	
 	/**
 	 * 19. Given a number determine whether or not it is valid per the Luhn formula.
 	 * 
@@ -827,37 +830,39 @@ public class EvaluationService {
 	 */
 	public boolean isLuhnValid(String string) {
 		String luhn = string.replaceAll("\\s", "");
-		if(luhn.length() < 2) {
+		if (luhn.length() < 2) {
 			return false;
 		}
-		for(char c : luhn.toCharArray()) {
+		for (char c : luhn.toCharArray()) {
 			if (Character.isLetter(c) || !Character.isDigit(c)) {
 				return false;
 			}
 		}
 		int sum = 0;
 		int currentNum = 0;
-		for (int i = luhn.length() - 2; i >=0; i -= 2) {
+		for (int i = luhn.length() - 2; i >= 0; i -= 2) {
 			currentNum = Integer.parseInt("" + luhn.charAt(i));
 			currentNum = currentNum * 2;
 			if (currentNum > 9 && i != 1) {
 				currentNum -= 9;
-				sum += currentNum + Character.getNumericValue(luhn.charAt(i+1));
+				sum += currentNum + Character.getNumericValue(luhn.charAt(i + 1));
 			} else if (currentNum > 9 && i == 1) {
 				currentNum -= 9;
-				sum += currentNum + Character.getNumericValue(luhn.charAt(i-1)) + Character.getNumericValue(luhn.charAt(i+1));
-			} else if(currentNum <= 9 && i != 1) {
-				sum += currentNum + Character.getNumericValue(luhn.charAt(i+1));
-			} else if (currentNum <=9 && i == 1){
-				sum += currentNum + Character.getNumericValue(luhn.charAt(i-1)) + Character.getNumericValue(luhn.charAt(i+1));
+				sum += currentNum + Character.getNumericValue(luhn.charAt(i - 1))
+						+ Character.getNumericValue(luhn.charAt(i + 1));
+			} else if (currentNum <= 9 && i != 1) {
+				sum += currentNum + Character.getNumericValue(luhn.charAt(i + 1));
+			} else if (currentNum <= 9 && i == 1) {
+				sum += currentNum + Character.getNumericValue(luhn.charAt(i - 1))
+						+ Character.getNumericValue(luhn.charAt(i + 1));
 			}
-			
+
 		}
-	
+
 		if (sum % 10 == 0) {
 			return true;
 		} else {
-		return false;
+			return false;
 		}
 	}
 
@@ -889,34 +894,34 @@ public class EvaluationService {
 	 * @return
 	 */
 	public int solveWordProblem(String string) {
-	
-		String noWhatIs = string.replace("What is ", "" );
+
+		String noWhatIs = string.replace("What is ", "");
 		String noQuestion = noWhatIs.replace("?", "");
 		String noBy = noQuestion.replace("by ", "");
 		String[] problem = noBy.split("\\s");
 		int result = 0;
-		
+
 		String operator = problem[1];
-		
-		switch (operator)  {
-		
-			case "plus":
-				result = Integer.parseInt(problem[0]) + Integer.parseInt(problem[2]);
-				break;
-			
-			case "minus":
-				result = Integer.parseInt(problem[0]) - Integer.parseInt(problem[2]);
-				break;
-				
-			case "multiplied":
-				result = Integer.parseInt(problem[0]) * Integer.parseInt(problem[2]);
-				break;
-			
-			case "divided":
-				result = Integer.parseInt(problem[0]) / Integer.parseInt(problem[2]);
-				break;
+
+		switch (operator) {
+
+		case "plus":
+			result = Integer.parseInt(problem[0]) + Integer.parseInt(problem[2]);
+			break;
+
+		case "minus":
+			result = Integer.parseInt(problem[0]) - Integer.parseInt(problem[2]);
+			break;
+
+		case "multiplied":
+			result = Integer.parseInt(problem[0]) * Integer.parseInt(problem[2]);
+			break;
+
+		case "divided":
+			result = Integer.parseInt(problem[0]) / Integer.parseInt(problem[2]);
+			break;
 		}
-		
+
 		return result;
 	}
 
